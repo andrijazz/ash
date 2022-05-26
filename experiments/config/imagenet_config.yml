@@ -1,0 +1,17 @@
+config:
+    # in distribution dataset
+    id_dataset: "imagenet"
+    # out-of-distribution datasets
+    ood_datasets: ["inaturalist", "sun", "places", "textures"]
+    # model
+    model_name: "resnet50"
+    # path to checkpoint from which to be restored
+    train_restore_file: "pretrained/resnet50-19c8e357.pth"
+    # batch size
+    batch_size: 200
+    # scoring method
+    scoring_method: "energy"
+    # method
+    method: "ash-b@65"
+    # output dir
+    output_dir: "/home/andrijazz/source/ash/output"

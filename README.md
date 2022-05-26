@@ -1,20 +1,16 @@
 # Extremely Simple Activation Shaping for Out-of-Distribution Detection
 
-Implementation of **A**ctivation **Sh**aping model for OOD detection, from the following paper:
+Implementation of **A**ctivation **Sh**aping model for OOD detection, NeurIPS 2022.
 
-[Extremely Simple Activation Shaping for Out-of-Distribution Detection](). NeurIPS 2022.\
-Andrija Djurisic, Arjun Ashok, Nebojsa Bozanic and Rosanne Liu\
-ML Collective, Google Brain
-
-![Activation Shaping method](resources/figure.png)
+![Activation Shaping method](resources/fig1.png)
 ## Setup
 
 ```bash
-# install dependencies
-$ pip install torch torchvision numpy
-
-# download datasets
+$ sudo apt install pipenv
+$ pipenv install
 ```
+
+Datasets and checkpoints can be downloaded from here:
 
 ## Usage
 
@@ -74,6 +70,3 @@ If you use our codebase, please cite our work:
 ```bibtex
 TODO
 ```
-
-
-*“Always give without remembering and always receive without forgetting."*
