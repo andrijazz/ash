@@ -3,7 +3,7 @@ from typing import Type, Callable, Union, List, Optional
 import torch
 import torch.nn as nn
 from torch import Tensor
-from ash import ash_s
+from ash import apply_ash
 
 
 def conv3x3(in_planes: int, out_planes: int, stride: int = 1, groups: int = 1, dilation: int = 1) -> nn.Conv2d:
@@ -66,7 +66,7 @@ class BasicBlock(nn.Module):
 
         out += identity
         if self.use_ash:
-            out = ash_s(out, percentile=90)
+            out = apply_ash(out)
         out = self.relu(out)
 
         return out
@@ -131,7 +131,7 @@ class Bottleneck(nn.Module):
 
         out += identity
         if self.use_ash:
-            out = ash_s(out, percentile=90)
+            out = apply_ash(out)
         out = self.relu(out)
 
         return out
@@ -243,7 +243,7 @@ class ResNet(nn.Module):
         x = self.layer3(x)
         x = self.layer4(x)
         x = self.avgpool(x)
-        x = ash_s(x, percentile=90)
+        x = apply_ash(x)
         x = torch.flatten(x, 1)
         x = self.fc(x)
         return x

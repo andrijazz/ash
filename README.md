@@ -10,8 +10,6 @@ $ sudo apt install pipenv
 $ pipenv install
 ```
 
-Datasets and checkpoints can be downloaded from here:
-
 ## Usage
 
 ```python

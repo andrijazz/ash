@@ -2,8 +2,6 @@
 
 import argparse
 import os
-# enables deterministic
-os.environ['CUBLAS_WORKSPACE_CONFIG'] = ':16:8'     # ':4096:8'
 
 import numpy as np
 import torch
@@ -14,15 +12,17 @@ from tqdm import tqdm
 from datasets.dataset_factory import build_dataset, get_num_classes
 from models.model_factory import build_model
 from utils.metrics import compute_in, compute_traditional_ood
-from utils.scores import get_score
+from ash import get_score
 from utils.utils import is_debug_session, load_config_yml, set_deterministic
+
+
+# enables deterministic
+os.environ['CUBLAS_WORKSPACE_CONFIG'] = ':16:8'     # ':4096:8'
 
 
 def eval_id_dataset(model, transform, dataset_name, output_dir, batch_size, use_gpu, use_tqdm):
     print(f'Processing {dataset_name} dataset.')
     dataset = build_dataset(dataset_name, transform, train=False)
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
 
     # setup dataset
     kwargs = {}
@@ -73,8 +73,6 @@ def eval_id_dataset(model, transform, dataset_name, output_dir, batch_size, use_
 def eval_ood_dataset(model, transform, dataset_name, output_dir, batch_size, use_gpu, use_tqdm):
     print(f'Processing {dataset_name} dataset.')
     dataset = build_dataset(dataset_name, transform, train=False)
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
 
     # setup dataset
     kwargs = {}
@@ -114,6 +112,10 @@ def eval_ood_dataset(model, transform, dataset_name, output_dir, batch_size, use
 
 def ood_eval(config, use_gpu, use_tqdm):
     num_classes = get_num_classes(config['id_dataset'])
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    output_dir = os.path.join(base_dir, 'output')
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
 
     # construct the model
     model, transform = build_model(config['model_name'], num_classes=num_classes)
@@ -125,11 +127,11 @@ def ood_eval(config, use_gpu, use_tqdm):
     if use_gpu:
         model = model.cuda()
 
-    eval_id_dataset(model, transform, config['id_dataset'], config['output_dir'], config['batch_size'], use_gpu, use_tqdm)
+    eval_id_dataset(model, transform, config['id_dataset'], output_dir, config['batch_size'], use_gpu, use_tqdm)
     for ood_dataset in config['ood_datasets']:
-        eval_ood_dataset(model, transform, ood_dataset, config['output_dir'], config['batch_size'], use_gpu, use_tqdm)
-    compute_traditional_ood(config['output_dir'], config['ood_datasets'], config['scoring_method'])
-    compute_in(config['output_dir'], config['scoring_method'])
+        eval_ood_dataset(model, transform, ood_dataset, output_dir, config['batch_size'], use_gpu, use_tqdm)
+    compute_traditional_ood(output_dir, config['ood_datasets'], config['scoring_method'])
+    compute_in(output_dir, config['scoring_method'])
 
 
 if __name__ == "__main__":
@@ -139,5 +141,6 @@ if __name__ == "__main__":
     parser.add_argument("--use-tqdm", action="store_true", default=False, help="Enables progress bar")
     args = parser.parse_args()
     config = load_config_yml(args.config)
+    os.environ['ash_method'] = config['method']
     set_deterministic()
     ood_eval(config, args.use_gpu, args.use_tqdm)

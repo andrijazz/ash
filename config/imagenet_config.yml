@@ -12,6 +12,4 @@ config:
     # scoring method
     scoring_method: "energy"
     # method
-    method: "ash-b@65"
-    # output dir
-    output_dir: "/home/andrijazz/source/ash/output"
+    method: "ash_b@65"
