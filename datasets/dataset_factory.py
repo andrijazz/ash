@@ -6,7 +6,7 @@ import torchvision.datasets
 from datasets.random_dataset import RandomData
 
 
-def build_dataset(dataset_name, transform, train=False, additional_config=None):
+def build_dataset(dataset_name, transform, train=False):
     dataset_dir = os.getenv('DATASETS')
 
     # cifar10

@@ -9,6 +9,13 @@ Implementation of **A**ctivation **Sh**aping model for OOD detection, NeurIPS 20
 $ sudo apt install pipenv
 $ pipenv install
 ```
+<!--TODO download datasets-->
+<!--TODO download checkpoints-->
+
+## Run
+```bash
+$ python ood_eval.py --config config/imagenet_config.yml --use-gpu --use-tqdm
+```
 
 ## Usage
 
@@ -39,7 +46,6 @@ for i, data in enumerate(trainloader, 0):
     # get ood predictions
     ood_prediction = get_score(logits)
 ```
-
 
 ## References
 
