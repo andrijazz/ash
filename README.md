@@ -6,14 +6,16 @@ Implementation of **A**ctivation **Sh**aping model for OOD detection, NeurIPS 20
 ## Setup
 
 ```bash
-$ sudo apt install pipenv
-$ pipenv install
+$ conda env create -f environment.yml
 ```
 <!--TODO download datasets-->
 <!--TODO download checkpoints-->
 
 ## Run
 ```bash
+$ pipenv shell
+$ export DATASETS=<your_dataset_path>
+$ export MODELS=<your_checkpoints_path>
 $ python ood_eval.py --config config/imagenet_config.yml --use-gpu --use-tqdm
 ```
 

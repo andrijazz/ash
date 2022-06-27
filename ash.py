@@ -23,69 +23,52 @@ def get_score(logits, method):
     exit('Unsupported scoring method')
 
 
-def get_tensor_device(x):
-    device = x.get_device()
-    if device == -1:
-        return 'cpu'
-    return device
-
-
 def ash_b(x, percentile=65):
     assert x.dim() == 4
+    assert 0 <= percentile <= 100
+    b, c, h, w = x.shape
 
     # calculate the sum of the input per sample
     s1 = x.sum(dim=[1, 2, 3])
 
-    # calculate pruning threshold per sample
-    threshold = np.percentile(x.cpu().numpy(), percentile, axis=[1, 2, 3])
-
-    # convert threshold from numpy array to pytorch tensor
-    device = get_tensor_device(x)
-    threshold = torch.from_numpy(threshold).to(device)
-
-    # set every input unit less then threshold to 0.0
-    mask = torch.lt(x, threshold[:, None, None, None])
-
-    # apply sharpening
-    alive = torch.logical_not(mask).float()
-    scale = (s1 / alive.sum(dim=[1, 2, 3])).float()
-    x = alive * scale[:, None, None, None]
+    n = x.shape[1:].numel()
+    k = n - int(np.round(n * percentile / 100.0))
+    t = x.view((b, c * h * w))
+    v, i = torch.topk(t, k, dim=1)
+    fill = s1 / k
+    fill = fill.unsqueeze(dim=1).expand(v.shape)
+    t.zero_().scatter_(dim=1, index=i, src=fill)
     return x
 
 
 def ash_p(x, percentile=65):
     assert x.dim() == 4
+    assert 0 <= percentile <= 100
 
-    # calculate pruning threshold per sample
-    threshold = np.percentile(x.cpu().numpy(), percentile, axis=[1, 2, 3])
+    b, c, h, w = x.shape
 
-    # convert threshold from numpy array to pytorch tensor
-    device = get_tensor_device(x)
-    threshold = torch.from_numpy(threshold).to(device)
-
-    # set every input unit less then threshold to 0.0
-    mask = torch.lt(x, threshold[:, None, None, None])
-    x = x * (1 - mask.float())  # x[mask] = 0.0
+    n = x.shape[1:].numel()
+    k = n - int(np.round(n * percentile / 100.0))
+    t = x.view((b, c * h * w))
+    v, i = torch.topk(t, k, dim=1)
+    t.zero_().scatter_(dim=1, index=i, src=v)
 
     return x
 
 
 def ash_s(x, percentile=65):
     assert x.dim() == 4
+    assert 0 <= percentile <= 100
+    b, c, h, w = x.shape
 
     # calculate the sum of the input per sample
     s1 = x.sum(dim=[1, 2, 3])
+    n = x.shape[1:].numel()
+    k = n - int(np.round(n * percentile / 100.0))
+    t = x.view((b, c * h * w))
+    v, i = torch.topk(t, k, dim=1)
+    t.zero_().scatter_(dim=1, index=i, src=v)
 
-    # calculate pruning threshold per sample
-    threshold = np.percentile(x.cpu().numpy(), percentile, axis=[1, 2, 3])
-
-    # convert threshold from numpy array to pytorch tensor
-    device = get_tensor_device(x)
-    threshold = torch.from_numpy(threshold).to(device)
-
-    # set every input unit less then threshold to 0.0
-    mask = torch.lt(x, threshold[:, None, None, None])
-    x = x * (1 - mask.float())  # x[mask] = 0.0
     # calculate new sum of the input per sample after pruning
     s2 = x.sum(dim=[1, 2, 3])
 
@@ -96,24 +79,17 @@ def ash_s(x, percentile=65):
     return x
 
 
-def ash_rand(x, percentile=65, a=0, b=10):
+def ash_rand(x, percentile=65, r1=0, r2=10):
     assert x.dim() == 4
+    assert 0 <= percentile <= 100
+    b, c, h, w = x.shape
 
-    # calculate pruning threshold per sample
-    threshold = np.percentile(x.detach().cpu().numpy(), percentile, axis=[1, 2, 3])
-
-    # convert threshold from numpy array to pytorch tensor
-    device = get_tensor_device(x)
-    threshold = torch.from_numpy(threshold).to(device)
-
-    # set every input unit less then threshold to 0.0
-    mask = torch.lt(x, threshold[:, None, None, None])
-    x = x * (1 - mask.float())  # x[mask] = 0.0
-
-    # apply sharpening
-    alive = torch.logical_not(mask).float()
-    c = (b - a) * torch.rand_like(x, device=device) + a
-    x = alive * c[:, None, None, None]
+    n = x.shape[1:].numel()
+    k = n - int(np.round(n * percentile / 100.0))
+    t = x.view((b, c * h * w))
+    v, i = torch.topk(t, k, dim=1)
+    v = v.uniform_(r1, r2)
+    t.zero_().scatter_(dim=1, index=i, src=v)
     return x
 
 

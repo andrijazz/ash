@@ -1,0 +1,25 @@
+name: ash
+channels:
+  - pytorch
+  - defaults
+dependencies:
+  - python=3.8.10
+  - pip=20.3
+  - pytorch=1.11.0
+  - torchvision=0.12.0
+  - cudatoolkit=11.3
+  - numpy=1.19.2
+  - pip:
+    - scikit-learn==0.23.1
+    - tqdm==4.62.3
+    - wandb==0.12.0
+    - ray[default]==1.12.0
+    - ray[tune]==1.12.0
+    - matplotlib==3.4.3
+#variables:
+#  SRC_ROOT: <path_to_your_source_root>
+#  PROJECT: ash
+#  DATASETS: <path_to_your_datasets_folder>
+#  MODELS: <path_to_your_pretrained_models_folder>
+#  LOG: <path_to_your_log_dir>
+#  WANDB_API_KEY: <your_wandb_api_key>

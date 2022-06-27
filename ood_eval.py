@@ -9,12 +9,11 @@ import torch.nn.functional as F
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 
+from ash import get_score
 from datasets.dataset_factory import build_dataset, get_num_classes
 from models.model_factory import build_model
 from utils.metrics import compute_in, compute_traditional_ood
-from ash import get_score
 from utils.utils import is_debug_session, load_config_yml, set_deterministic
-
 
 # enables deterministic
 os.environ['CUBLAS_WORKSPACE_CONFIG'] = ':16:8'     # ':4096:8'
@@ -89,12 +88,10 @@ def eval_ood_dataset(model, transform, dataset_name, output_dir, batch_size, use
         f1 = open(os.path.join(output_dir, f"{dataset_name}.txt"), 'w')
         for i, samples in enumerate(dataloader):
             images = samples[0]
-            labels = samples[1]
 
             # Create non_blocking tensors for distributed training
             if use_gpu:
                 images = images.cuda(non_blocking=True)
-                labels = labels.cuda(non_blocking=True)
 
             logits = model(images)
             scores = get_score(logits, config['scoring_method'])
