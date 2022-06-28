@@ -74,7 +74,7 @@ def build_dataset(dataset_name, transform, train=False):
     # imagenet
     if dataset_name == "imagenet":
         mode_path = "train" if train else "val"
-        external_disk = "/datadrive/datasets"
+        external_disk = os.getenv('EXTERNAL_DRIVE') if os.getenv('EXTERNAL_DRIVE') else dataset_dir
         dataset = torchvision.datasets.ImageFolder(os.path.join(external_disk, 'imagenet', mode_path), transform=transform)
         return dataset
 
