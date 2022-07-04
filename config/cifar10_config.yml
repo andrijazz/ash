@@ -1,0 +1,15 @@
+config:
+    # in distribution dataset
+    id_dataset: "cifar10"
+    # out-of-distribution datasets
+    ood_datasets: ["svhn"]
+    # model
+    model_name: "resnet34"
+    # path to checkpoint from which to be restored
+    train_restore_file: "pretrained/resnet_cifar10_fixed.pth"
+    # batch size
+    batch_size: 200
+    # scoring method
+    scoring_method: "energy"
+    # method
+    method: "ash_s@90"

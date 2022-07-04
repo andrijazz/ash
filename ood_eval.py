@@ -15,9 +15,6 @@ from models.model_factory import build_model
 from utils.metrics import compute_in, compute_traditional_ood
 from utils.utils import is_debug_session, load_config_yml, set_deterministic
 
-# enables deterministic
-os.environ['CUBLAS_WORKSPACE_CONFIG'] = ':16:8'     # ':4096:8'
-
 
 def eval_id_dataset(model, transform, dataset_name, output_dir, batch_size, use_gpu, use_tqdm):
     print(f'Processing {dataset_name} dataset.')
@@ -26,7 +23,7 @@ def eval_id_dataset(model, transform, dataset_name, output_dir, batch_size, use_
     # setup dataset
     kwargs = {}
     if torch.cuda.is_available() and not is_debug_session():
-        kwargs = {'num_workers': 2, 'pin_memory': True}
+        kwargs = {'num_workers': 2, 'pin_memory': True, 'generator': g, 'worker_init_fn': seed_worker}
 
     dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=False, **kwargs)
 
@@ -73,10 +70,9 @@ def eval_ood_dataset(model, transform, dataset_name, output_dir, batch_size, use
     print(f'Processing {dataset_name} dataset.')
     dataset = build_dataset(dataset_name, transform, train=False)
 
-    # setup dataset
     kwargs = {}
     if torch.cuda.is_available() and not is_debug_session():
-        kwargs = {'num_workers': 2, 'pin_memory': True}
+        kwargs = {'num_workers': 2, 'pin_memory': True, 'generator': g, 'worker_init_fn': seed_worker}
 
     dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=False, **kwargs)
 
@@ -141,5 +137,5 @@ if __name__ == "__main__":
     args = parser.parse_args()
     config = load_config_yml(args.config)
     os.environ['ash_method'] = config['method']
-    set_deterministic()
+    g, seed_worker = set_deterministic()
     ood_eval(config, args.use_gpu, args.use_tqdm)

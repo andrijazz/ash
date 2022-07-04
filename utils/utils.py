@@ -1,8 +1,10 @@
-import sys
-import yaml
+import os
 import random
+import sys
+
 import numpy as np
 import torch
+import yaml
 
 
 def get_tensor_device(x):
@@ -39,3 +41,14 @@ def set_deterministic(seed=1):
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.enabled = False
     torch.use_deterministic_algorithms(True)
+    # enables deterministic
+    os.environ['CUBLAS_WORKSPACE_CONFIG'] = ':16:8'     # ':4096:8'
+
+    def seed_worker(worker_id):
+        # worker_seed = torch.initial_seed() % 2 ** 32
+        np.random.seed(seed)
+        random.seed(seed)
+
+    g = torch.Generator()
+    g.manual_seed(seed)
+    return g, seed_worker
