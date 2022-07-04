@@ -6,7 +6,7 @@ config:
     # model
     model_name: "resnet50"
     # path to checkpoint from which to be restored
-    train_restore_file: "pretrained/resnet50-19c8e357.pth"
+    train_restore_file: "resnet50-19c8e357.pth"
     # batch size
     batch_size: 200
     # scoring method

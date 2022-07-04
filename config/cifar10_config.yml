@@ -6,7 +6,7 @@ config:
     # model
     model_name: "resnet34"
     # path to checkpoint from which to be restored
-    train_restore_file: "pretrained/resnet_cifar10_fixed.pth"
+    train_restore_file: "resnet_cifar10_fixed.pth"
     # batch size
     batch_size: 200
     # scoring method

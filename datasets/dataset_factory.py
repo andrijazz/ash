@@ -91,7 +91,7 @@ def build_dataset(dataset_name, transform, train=False):
         return dataset
 
     if dataset_name == 'textures':
-        dataset = torchvision.datasets.ImageFolder(os.path.join(dataset_dir, 'dtd-r1.0.1', 'dtd', 'images'), transform=transform)
+        dataset = torchvision.datasets.ImageFolder(os.path.join(dataset_dir, 'dtd', 'images'), transform=transform)
         return dataset
 
     if dataset_name == "imagenette":

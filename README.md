@@ -5,17 +5,20 @@ Implementation of **A**ctivation **Sh**aping model for OOD detection, NeurIPS 20
 ![Activation Shaping method](resources/fig1.png)
 ## Setup
 
-Make sure you setup env variables from `environment.yml` file and run:
-
 ```bash
+# create conda env and install dependencies
 $ conda env create -f environment.yml
+$ conda activate ash
+# set environmental variables
+$ export DATASETS=<your_path_to_datasets_folder>
+$ export MODELS=<your_path_to_checkpoints_folder>
+# download datasets and checkpoints
+$ bash scripts/download.sh
 ```
-<!--TODO download datasets-->
-<!--TODO download checkpoints-->
+Please download ImageNet dataset manually to `$DATASET` dir by following [this](https://gist.github.com/bonlime/4e0d236cf98cd5b15d977dfa03a63643) instructions.
 
 ## Run
 ```bash
-$ conda activate ash
 $ python ood_eval.py --config config/imagenet_config.yml --use-gpu --use-tqdm
 ```
 
