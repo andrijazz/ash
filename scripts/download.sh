@@ -33,5 +33,5 @@ tar -xf ${DATASETS}/Places.tar.gz -C ${DATASETS}
 tar -xf ${DATASETS}/dtd-r1.0.1.tar.gz -C ${DATASETS}
 
 # download checkpoints
-wget -P ${MODELS} https://www.dropbox.com/s/mx9gytxj39241on/checkpoints.zip?dl=0
+wget -P ${MODELS} https://www.dropbox.com/s/mx9gytxj39241on/checkpoints.zip
 unzip ${MODELS}/checkpoints.zip -d ${MODELS}
