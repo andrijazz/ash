@@ -3,7 +3,7 @@ from torch import nn
 from torch import Tensor
 from torchvision._internally_replaced_utils import load_state_dict_from_url
 from typing import Callable, Any, Optional, List
-
+from ash import apply_ash
 
 __all__ = ['MobileNetV2', 'mobilenet_v2']
 
@@ -191,6 +191,7 @@ class MobileNetV2(nn.Module):
         x = self.features(x)
         # Cannot use "squeeze" as batch-size can be 1
         x = nn.functional.adaptive_avg_pool2d(x, (1, 1))
+        x = apply_ash(x)
         x = torch.flatten(x, 1)
         x = self.classifier(x)
         return x
