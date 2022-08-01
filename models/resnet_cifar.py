@@ -191,7 +191,7 @@ class ResNet(nn.Module):
         out = self.layer3(out)
         out = self.layer4(out)
         out = F.avg_pool2d(out, 4)
-        out = apply_ash(out)
+        out = apply_ash(out, method=getattr(self, 'ash_method'))
         out = out.view(out.size(0), -1)
         y = self.linear(out)
         return y

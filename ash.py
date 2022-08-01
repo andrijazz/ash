@@ -93,8 +93,7 @@ def ash_rand(x, percentile=65, r1=0, r2=10):
     return x
 
 
-def apply_ash(x):
-    method = os.getenv('ash_method')
+def apply_ash(x, method):
     if method.startswith('ash'):
         [fn, p] = method.split('@')
         return eval(fn)(x, int(p))
