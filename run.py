@@ -47,10 +47,10 @@ def cifar():
         "train_restore_file": "densenet100_cifar10.pth",
         "batch_size": 200,
         "scoring_method": tune.grid_search(["energy", "msp"]),
-        "method": tune.grid_search(["ash_s@65", "ash_s@70"])
-        # "method": tune.grid_search(["ash_s@65", "ash_s@70", "ash_s@75", "ash_s@80", "ash_s@85", "ash_s@90", "ash_s@95", "ash_s@99",
-        #                             "ash_b@65", "ash_b@70", "ash_b@75", "ash_b@80", "ash_b@85", "ash_b@90", "ash_b@95", "ash_b@99",
-        #                             "ash_p@65", "ash_p@70", "ash_p@75", "ash_p@80", "ash_p@85", "ash_p@90", "ash_p@95", "ash_p@99"])
+        # "method": tune.grid_search(["ash_s@65", "ash_s@70"])
+        "method": tune.grid_search(["ash_s@65", "ash_s@70", "ash_s@75", "ash_s@80", "ash_s@85", "ash_s@90", "ash_s@95", "ash_s@99",
+                                    "ash_b@65", "ash_b@70", "ash_b@75", "ash_b@80", "ash_b@85", "ash_b@90", "ash_b@95", "ash_b@99",
+                                    "ash_p@65", "ash_p@70", "ash_p@75", "ash_p@80", "ash_p@85", "ash_p@90", "ash_p@95", "ash_p@99"])
     }
     run(config)
 
@@ -70,10 +70,11 @@ def cifar():
 
 def run(config):
     gpus_per_trial = 1
-    tune.run(partial(ood_eval, use_gpu=True, use_tqdm=True),
-             config=config,
-             resources_per_trial={"cpu": 2, "gpu": gpus_per_trial},
-             local_dir=os.getenv('RAY_LOG'))
+    analysis = tune.run(partial(ood_eval, use_gpu=True, use_tqdm=True),
+                        config=config,
+                        resources_per_trial={"cpu": 2, "gpu": gpus_per_trial},
+                        log_to_file=True)
+    print(analysis)
 
 
 def exec(args):

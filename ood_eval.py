@@ -2,6 +2,7 @@
 
 import argparse
 import os
+from datetime import datetime
 
 import numpy as np
 import torch
@@ -14,7 +15,6 @@ from datasets.dataset_factory import build_dataset, get_num_classes
 from models.model_factory import build_model
 from utils.metrics import compute_in, compute_traditional_ood
 from utils.utils import is_debug_session, load_config_yml, set_deterministic
-from datetime import datetime
 
 
 def eval_id_dataset(model, transform, dataset_name, output_dir, batch_size, scoring_method, use_gpu, use_tqdm):
@@ -60,7 +60,6 @@ def eval_id_dataset(model, transform, dataset_name, output_dir, batch_size, scor
 
             if use_tqdm:
                 progress_bar.update()
-
         f1.close()
         g1.close()
 
@@ -99,7 +98,6 @@ def eval_ood_dataset(model, transform, dataset_name, output_dir, batch_size, sco
 
             if use_tqdm:
                 progress_bar.update()
-
         f1.close()
 
         if use_tqdm:
@@ -131,7 +129,8 @@ def ood_eval(config, use_gpu, use_tqdm):
     for ood_dataset in config['ood_datasets']:
         eval_ood_dataset(model, transform, ood_dataset, output_dir, config['batch_size'], config['scoring_method'], use_gpu, use_tqdm)
 
-    print(f"{config['method']} - {config['scoring_method']} - {config['id_dataset']} stats")
+    name = f"{config['method']} - {config['scoring_method']} - {config['id_dataset']}"
+    print(name)
     compute_traditional_ood(output_dir, config['ood_datasets'], config['scoring_method'])
     compute_in(output_dir, config['scoring_method'])
 
