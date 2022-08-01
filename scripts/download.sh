@@ -40,5 +40,5 @@ tar -xf ${DATASETS}/dtd-r1.0.1.tar.gz -C ${DATASETS}
 tar -xf ${DATASETS}/test_256.tar -C ${PLACES365_DATASET_DIR}
 
 # download checkpoints
-wget -P ${MODELS} https://www.dropbox.com/s/mx9gytxj39241on/checkpoints.zip
+wget -P ${MODELS} https://www.dropbox.com/s/o5r3t3f0uiqdmpm/checkpoints.zip
 unzip ${MODELS}/checkpoints.zip -d ${MODELS}

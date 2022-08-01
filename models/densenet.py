@@ -127,6 +127,6 @@ class DenseNet3(nn.Module):
         out = self.block3(out)
         out = self.relu(self.bn1(out))
         out = F.avg_pool2d(out, 8)
-        out = apply_ash(out)
+        out = apply_ash(out, method=getattr(self, 'ash_method'))
         out = out.view(-1, self.in_planes)
         return self.fc(out)

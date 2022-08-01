@@ -2,6 +2,7 @@
 
 import argparse
 import os
+from datetime import datetime
 
 import numpy as np
 import torch
@@ -16,9 +17,10 @@ from utils.metrics import compute_in, compute_traditional_ood
 from utils.utils import is_debug_session, load_config_yml, set_deterministic
 
 
-def eval_id_dataset(model, transform, dataset_name, output_dir, batch_size, use_gpu, use_tqdm):
+def eval_id_dataset(model, transform, dataset_name, output_dir, batch_size, scoring_method, use_gpu, use_tqdm):
     print(f'Processing {dataset_name} dataset.')
     dataset = build_dataset(dataset_name, transform, train=False)
+    g, seed_worker = set_deterministic()
 
     # setup dataset
     kwargs = {}
@@ -52,13 +54,12 @@ def eval_id_dataset(model, transform, dataset_name, output_dir, batch_size, use_
             for k in range(preds.shape[0]):
                 g1.write("{} {} {}\n".format(labels[k], preds[k], confs[k]))
 
-            scores = get_score(logits, config['scoring_method'])
+            scores = get_score(logits, scoring_method)
             for score in scores:
                 f1.write("{}\n".format(score))
 
             if use_tqdm:
                 progress_bar.update()
-
         f1.close()
         g1.close()
 
@@ -66,9 +67,10 @@ def eval_id_dataset(model, transform, dataset_name, output_dir, batch_size, use_
             progress_bar.close()
 
 
-def eval_ood_dataset(model, transform, dataset_name, output_dir, batch_size, use_gpu, use_tqdm):
+def eval_ood_dataset(model, transform, dataset_name, output_dir, batch_size, scoring_method, use_gpu, use_tqdm):
     print(f'Processing {dataset_name} dataset.')
     dataset = build_dataset(dataset_name, transform, train=False)
+    g, seed_worker = set_deterministic()
 
     kwargs = {}
     if torch.cuda.is_available() and not is_debug_session():
@@ -90,13 +92,12 @@ def eval_ood_dataset(model, transform, dataset_name, output_dir, batch_size, use
                 images = images.cuda(non_blocking=True)
 
             logits = model(images)
-            scores = get_score(logits, config['scoring_method'])
+            scores = get_score(logits, scoring_method)
             for score in scores:
                 f1.write("{}\n".format(score))
 
             if use_tqdm:
                 progress_bar.update()
-
         f1.close()
 
         if use_tqdm:
@@ -106,7 +107,8 @@ def eval_ood_dataset(model, transform, dataset_name, output_dir, batch_size, use
 def ood_eval(config, use_gpu, use_tqdm):
     num_classes = get_num_classes(config['id_dataset'])
     base_dir = os.path.dirname(os.path.abspath(__file__))
-    output_dir = os.path.join(base_dir, 'output')
+    now = str(datetime.now())
+    output_dir = os.path.join(base_dir, 'output', now)
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
@@ -117,14 +119,18 @@ def ood_eval(config, use_gpu, use_tqdm):
     model.load_state_dict(checkpoint)
     model.eval()
 
+    # apply ash
+    setattr(model, 'ash_method', config['method'])
+
     if use_gpu:
         model = model.cuda()
 
-    eval_id_dataset(model, transform, config['id_dataset'], output_dir, config['batch_size'], use_gpu, use_tqdm)
+    eval_id_dataset(model, transform, config['id_dataset'], output_dir, config['batch_size'], config['scoring_method'], use_gpu, use_tqdm)
     for ood_dataset in config['ood_datasets']:
-        eval_ood_dataset(model, transform, ood_dataset, output_dir, config['batch_size'], use_gpu, use_tqdm)
+        eval_ood_dataset(model, transform, ood_dataset, output_dir, config['batch_size'], config['scoring_method'], use_gpu, use_tqdm)
 
-    print(f"{config['method']} - {config['id_dataset']} stats")
+    name = f"{config['method']} - {config['scoring_method']} - {config['id_dataset']}"
+    print(name)
     compute_traditional_ood(output_dir, config['ood_datasets'], config['scoring_method'])
     compute_in(output_dir, config['scoring_method'])
 
@@ -136,6 +142,4 @@ if __name__ == "__main__":
     parser.add_argument("--use-tqdm", action="store_true", default=False, help="Enables progress bar")
     args = parser.parse_args()
     config = load_config_yml(args.config)
-    os.environ['ash_method'] = config['method']
-    g, seed_worker = set_deterministic()
     ood_eval(config, args.use_gpu, args.use_tqdm)
