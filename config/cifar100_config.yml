@@ -1,12 +1,12 @@
 config:
     # in distribution dataset
-    id_dataset: "cifar10"
+    id_dataset: "cifar100"
     # out-of-distribution datasets
     ood_datasets: ["svhn", "lsuncrop", "lsunresize", "isun", "textures", "places365"]
     # model
     model_name: "densenet100"
     # path to checkpoint from which to be restored
-    train_restore_file: "densenet100_cifar10.pth"
+    train_restore_file: "densenet100_cifar100.pth"
     # batch size
     batch_size: 200
     # scoring method

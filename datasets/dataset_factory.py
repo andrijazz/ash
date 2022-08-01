@@ -1,9 +1,10 @@
 import os
-
+import torch
 import torchvision
 import torchvision.datasets
 
 from datasets.random_dataset import RandomData
+from utils.svhn_loader import SVHN
 
 
 def build_dataset(dataset_name, transform, train=False):
@@ -20,10 +21,11 @@ def build_dataset(dataset_name, transform, train=False):
 
     if dataset_name == "svhn":
         split = 'train' if train else 'test'
-        dataset = torchvision.datasets.SVHN(os.path.join(dataset_dir, "SVHN"),
-                                            transform=transform,
-                                            split=split,
-                                            download=False)
+        # dataset = torchvision.datasets.SVHN(os.path.join(dataset_dir, "SVHN"),
+        #                                     transform=transform,
+        #                                     split=split,
+        #                                     download=False)
+        dataset = SVHN(os.path.join(dataset_dir, "SVHN"), transform=transform, split='test', download=False)
         return dataset
 
     # gaussian
@@ -89,6 +91,11 @@ def build_dataset(dataset_name, transform, train=False):
     if dataset_name == 'places':
         dataset = torchvision.datasets.ImageFolder(os.path.join(dataset_dir, 'Places'), transform=transform)
         return dataset
+
+    if dataset_name == 'places365':
+        dataset = torchvision.datasets.ImageFolder(os.path.join(dataset_dir, 'places365'), transform=transform)
+        dataset_subset = torch.utils.data.Subset(dataset, list(range(10000)))
+        return dataset_subset
 
     if dataset_name == 'textures':
         dataset = torchvision.datasets.ImageFolder(os.path.join(dataset_dir, 'dtd', 'images'), transform=transform)

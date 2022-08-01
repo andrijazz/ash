@@ -12,12 +12,18 @@ wget -P ${DATASETS} https://www.dropbox.com/s/fhtsw1m3qxlwj6h/LSUN.tar.gz
 wget -P ${DATASETS} https://www.dropbox.com/s/moqh2wh8696c3yl/LSUN_resize.tar.gz
 wget -P ${DATASETS} https://www.dropbox.com/s/ssz7qxfqae0cca5/iSUN.tar.gz
 wget -P ${DATASETS} https://people.eecs.berkeley.edu/~hendrycks/imagenet-a.tar
+wget -P ${DATASETS} https://people.eecs.berkeley.edu/~hendrycks/imagenet-a.tar
+wget -P ${DATASETS} http://data.csail.mit.edu/places/places365/test_256.tar
+
 # svhn dataset
 SVHN_DATASET_DIR="${DATASETS}/SVHN"
 mkdir -P ${SVHN_DATASET_DIR}
 wget -P ${SVHN_DATASET_DIR} http://ufldl.stanford.edu/housenumbers/test_32x32.mat
 wget -P ${SVHN_DATASET_DIR} http://ufldl.stanford.edu/housenumbers/train_32x32.mat
 wget -P ${SVHN_DATASET_DIR} http://ufldl.stanford.edu/housenumbers/extra_32x32.mat
+
+PLACES365_DATASET_DIR="${DATASETS}/places365"
+mkdir -P ${PLACES365_DATASET_DIR}
 # unpack
 tar -xf ${DATASETS}/cifar-10-python.tar.gz -C ${DATASETS}
 tar -xf ${DATASETS}/cifar-100-python.tar.gz -C ${DATASETS}
@@ -31,6 +37,7 @@ tar -xf ${DATASETS}/iNaturalist.tar.gz -C ${DATASETS}
 tar -xf ${DATASETS}/SUN.tar.gz -C ${DATASETS}
 tar -xf ${DATASETS}/Places.tar.gz -C ${DATASETS}
 tar -xf ${DATASETS}/dtd-r1.0.1.tar.gz -C ${DATASETS}
+tar -xf ${DATASETS}/test_256.tar -C ${PLACES365_DATASET_DIR}
 
 # download checkpoints
 wget -P ${MODELS} https://www.dropbox.com/s/mx9gytxj39241on/checkpoints.zip
