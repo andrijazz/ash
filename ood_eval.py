@@ -124,7 +124,7 @@ def ood_eval(config, use_gpu, use_tqdm):
     for ood_dataset in config['ood_datasets']:
         eval_ood_dataset(model, transform, ood_dataset, output_dir, config['batch_size'], use_gpu, use_tqdm)
 
-    print(f"{config['method']} stats")
+    print(f"{config['method']} - {config['id_dataset']} stats")
     compute_traditional_ood(output_dir, config['ood_datasets'], config['scoring_method'])
     compute_in(output_dir, config['scoring_method'])
 
