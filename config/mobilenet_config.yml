@@ -1,0 +1,15 @@
+config:
+    # in distribution dataset
+    id_dataset: "imagenet"
+    # out-of-distribution datasets
+    ood_datasets: ["inaturalist", "sun", "places", "textures"]
+    # model
+    model_name: "mobilenetv2"
+    # path to checkpoint from which to be restored
+    train_restore_file: "mobilenet_v2-b0353104.pth"
+    # batch size
+    batch_size: 200
+    # scoring method
+    scoring_method: "energy"
+    # method
+    method: "ash_s@90"
