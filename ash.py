@@ -93,8 +93,28 @@ def ash_rand(x, percentile=65, r1=0, r2=10):
     return x
 
 
+def react(x, threshold):
+    x = x.clip(max=threshold)
+    return x
+
+
+def react_and_ash(x, clip_threshold, pruning_percentile):
+    x = x.clip(max=clip_threshold)
+    x = ash_s(x, pruning_percentile)
+    return x
+
+
 def apply_ash(x, method):
+    if method.startswith('react_and_ash@'):
+        [fn, t, p] = method.split('@')
+        return eval(fn)(x, float(t), int(p))
+
+    if method.startswith('react@'):
+        [fn, t] = method.split('@')
+        return eval(fn)(x, float(t))
+
     if method.startswith('ash'):
         [fn, p] = method.split('@')
         return eval(fn)(x, int(p))
+
     return x

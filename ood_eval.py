@@ -25,7 +25,7 @@ def eval_id_dataset(model, transform, dataset_name, output_dir, batch_size, scor
     # setup dataset
     kwargs = {}
     if torch.cuda.is_available() and not is_debug_session():
-        kwargs = {'num_workers': 2, 'pin_memory': True, 'generator': g, 'worker_init_fn': seed_worker}
+        kwargs = {'num_workers': 5, 'pin_memory': True, 'generator': g, 'worker_init_fn': seed_worker}
 
     dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=False, **kwargs)
 
@@ -74,7 +74,7 @@ def eval_ood_dataset(model, transform, dataset_name, output_dir, batch_size, sco
 
     kwargs = {}
     if torch.cuda.is_available() and not is_debug_session():
-        kwargs = {'num_workers': 2, 'pin_memory': True, 'generator': g, 'worker_init_fn': seed_worker}
+        kwargs = {'num_workers': 5, 'pin_memory': True, 'generator': g, 'worker_init_fn': seed_worker}
 
     dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=False, **kwargs)
 

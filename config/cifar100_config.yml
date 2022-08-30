@@ -12,4 +12,4 @@ config:
     # scoring method
     scoring_method: "energy"
     # method
-    method: "ash_s@90"
+    method: "ash_s@95"
