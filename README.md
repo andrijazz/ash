@@ -64,11 +64,11 @@ for i, data in enumerate(trainloader, 0):
 ```
 
 ```bibtex
-@inproceedings{bibas2021single,
-  title={Single Layer Predictive Normalized Maximum Likelihood for Out-of-Distribution Detection},
-  author={Bibas, Koby and Feder, Meir and Hassner, Tal},
-  booktitle={Advances in Neural Information Processing Systems},
-  year={2021}
+@inproceedings{sun2022dice,
+  title={DICE: Leveraging Sparsification for Out-of-Distribution Detection},
+  author={Sun, Yiyou and Li, Yixuan},
+  booktitle={European Conference on Computer Vision},
+  year={2022}
 }
 ```
 
