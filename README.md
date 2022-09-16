@@ -1,6 +1,6 @@
 # Extremely Simple Activation Shaping for Out-of-Distribution Detection
 
-Implementation of **A**ctivation **Sh**aping model for OOD detection, NeurIPS 2022.
+Implementation of **A**ctivation **Sh**aping model for OOD detection.
 
 ![Activation Shaping method](resources/fig1.png)
 ## Setup
