@@ -77,5 +77,11 @@ for i, data in enumerate(trainloader, 0):
 If you use our codebase, please cite our work:
 
 ```bibtex
-TODO
+@article{djurisic2022ash,
+    url = {https://arxiv.org/abs/2209.09858},
+    author = {Djurisic, Andrija and Bozanic, Nebojsa and Ashok, Arjun and Liu, Rosanne},
+    title = {Extremely Simple Activation Shaping for Out-of-Distribution Detection},
+    publisher = {arXiv},
+    year = {2022},
+    }
 ```
