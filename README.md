@@ -2,7 +2,7 @@
 
 Implementation of **A**ctivation **Sh**aping model for OOD detection.
 
-![Activation Shaping method](resources/overview_figure.jpeg)
+![Activation Shaping method](resources/overview_figure_cropped-min.png)
 ## Setup
 
 ```bash
