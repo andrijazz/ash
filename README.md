@@ -46,7 +46,7 @@ class Net(nn.Module):
         return x
 
 net = Net()
-for i, data in enumerate(trainloader, 0):
+for i, data in enumerate(testloader):
     inputs, labels = data
     logits = net(inputs)
     
