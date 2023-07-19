@@ -1,3 +1,5 @@
+- [ ] Test our OOD approach to a benchmark https://github.com/IML-DKFZ/fd-shifts (Paul reached out to us during our poster presentation)
+
 # Extremely Simple Activation Shaping for Out-of-Distribution Detection
 
 Implementation of **A**ctivation **Sh**aping model for OOD detection.
