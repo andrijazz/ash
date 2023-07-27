@@ -17,13 +17,13 @@ wget -P ${DATASETS} http://data.csail.mit.edu/places/places365/test_256.tar
 
 # svhn dataset
 SVHN_DATASET_DIR="${DATASETS}/SVHN"
-mkdir -P ${SVHN_DATASET_DIR}
+mkdir -p ${SVHN_DATASET_DIR}
 wget -P ${SVHN_DATASET_DIR} http://ufldl.stanford.edu/housenumbers/test_32x32.mat
 wget -P ${SVHN_DATASET_DIR} http://ufldl.stanford.edu/housenumbers/train_32x32.mat
 wget -P ${SVHN_DATASET_DIR} http://ufldl.stanford.edu/housenumbers/extra_32x32.mat
 
 PLACES365_DATASET_DIR="${DATASETS}/places365"
-mkdir -P ${PLACES365_DATASET_DIR}
+mkdir -p ${PLACES365_DATASET_DIR}
 # unpack
 tar -xf ${DATASETS}/cifar-10-python.tar.gz -C ${DATASETS}
 tar -xf ${DATASETS}/cifar-100-python.tar.gz -C ${DATASETS}
@@ -41,4 +41,4 @@ tar -xf ${DATASETS}/test_256.tar -C ${PLACES365_DATASET_DIR}
 
 # download checkpoints
 wget -P ${MODELS} https://www.dropbox.com/s/o5r3t3f0uiqdmpm/checkpoints.zip
-unzip ${MODELS}/checkpoints.zip -d ${MODELS}
+unzip -j ${MODELS}/checkpoints.zip -d ${MODELS}
