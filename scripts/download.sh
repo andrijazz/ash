@@ -47,8 +47,9 @@ tar -xf ${DATASETS}/Places.tar.gz -C ${DATASETS}
 tar -xf ${DATASETS}/dtd-r1.0.1.tar.gz -C ${DATASETS}
 tar -xf ${DATASETS}/test_256.tar -C ${PLACES365_DATASET_DIR}
 
-# mkdir -p "${IMAGENET_DATASET_DIR}/val" && mv ILSVRC2012_img_val.tar "${IMAGENET_DATASET_DIR}/val" && cd "${IMAGENET_DATASET_DIR}/val" && tar -xvf ILSVRC2012_img_val.tar
-# wget -qO- https://raw.githubusercontent.com/soumith/imagenetloader.torch/master/valprep.sh | bash
+tar -xvf ${DATASETS}/ILSVRC2012_img_val.tar -C ${IMAGENET_DATASET_DIR}
+cd ${IMAGENET_DATASET_DIR}
+wget -qO- https://raw.githubusercontent.com/soumith/imagenetloader.torch/master/valprep.sh | bash
 
 # download checkpoints
 wget -P ${MODELS} https://www.dropbox.com/s/o5r3t3f0uiqdmpm/checkpoints.zip
