@@ -1,5 +1,5 @@
 - [ ] Test our OOD approach to a benchmark https://github.com/IML-DKFZ/fd-shifts (Paul reached out to us during our poster presentation)
-- [ ] Combine with the other OOD approach https://github.com/deeplearning-wisc/cider, which seems to be complementary (Ousmane reached out to us durin our poster presentation)
+- [x] Combine with the other OOD approach https://github.com/deeplearning-wisc/cider, which seems to be complementary (Ousmane reached out to us durin our poster presentation)
 
 # Extremely Simple Activation Shaping for Out-of-Distribution Detection
 
