@@ -23,8 +23,8 @@ wget -P ${SVHN_DATASET_DIR} http://ufldl.stanford.edu/housenumbers/test_32x32.ma
 wget -P ${SVHN_DATASET_DIR} http://ufldl.stanford.edu/housenumbers/train_32x32.mat
 wget -P ${SVHN_DATASET_DIR} http://ufldl.stanford.edu/housenumbers/extra_32x32.mat
 
-# imagenet
-IMAGENET_DATASET_DIR="${DATASETS}/imagenet"
+# imagenet val
+IMAGENET_DATASET_DIR="${DATASETS}/imagenet/val"
 mkdir -p ${IMAGENET_DATASET_DIR}
 wget -P ${IMAGENET_DATASET_DIR} https://image-net.org/data/ILSVRC/2012/ILSVRC2012_img_val.tar
 
