@@ -1,0 +1,15 @@
+config:
+    # in distribution dataset
+    id_dataset: "imagenet"
+    # out-of-distribution datasets
+    ood_datasets: ["inaturalist", "sun", "places", "textures"]
+    # model
+    model_name: "densenet_imagenet"
+    # path to checkpoint from which to be restored
+    train_restore_file: ""
+    # batch size
+    batch_size: 200
+    # scoring method
+    scoring_method: "energy"
+    # method
+    method: "ash_s@99"

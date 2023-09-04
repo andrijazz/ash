@@ -114,9 +114,12 @@ def ood_eval(config, use_gpu, use_tqdm):
 
     # construct the model
     model, transform = build_model(config['model_name'], num_classes=num_classes)
-    checkpoint = os.path.join(os.getenv('MODELS'), config['train_restore_file'])
-    checkpoint = torch.load(checkpoint, map_location='cpu')
-    model.load_state_dict(checkpoint)
+    if config['train_restore_file']:
+        checkpoint = os.path.join(os.getenv('MODELS'), config['train_restore_file'])
+        checkpoint = torch.load(checkpoint, map_location='cpu')
+        model.load_state_dict(checkpoint)
+    else:
+        print('Warning: train_restore_file config not specified')
     model.eval()
 
     # apply ash

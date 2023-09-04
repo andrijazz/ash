@@ -7,6 +7,7 @@ PreActBlock and PreActBottleneck module is from the later paper:
     Identity Mappings in Deep Residual Networks. arXiv:1603.05027
 Original code is from https://github.com/kuangliu/pytorch-cifar/blob/master/models/resnet.py
 """
+import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
@@ -191,9 +192,15 @@ class ResNet(nn.Module):
         out = self.layer3(out)
         out = self.layer4(out)
         out = F.avg_pool2d(out, 4)
-        out = apply_ash(out, method=getattr(self, 'ash_method'))
+        # out = apply_ash(out, method=getattr(self, 'ash_method'))
+        # out = torch.clip(out, max=1.0)
         out = out.view(out.size(0), -1)
         y = self.linear(out)
+        y_c = y.clone()
+        i = torch.argmax(y, dim=1).unsqueeze(1)
+        fill = torch.ones_like(i).float()
+        y.zero_().scatter_(dim=1, index=i, src=fill)
+        y = y * y_c
         return y
 
 

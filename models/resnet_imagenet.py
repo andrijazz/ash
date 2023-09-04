@@ -4,6 +4,7 @@ import torch
 import torch.nn as nn
 from torch import Tensor
 from ash import apply_ash
+import os
 
 
 def conv3x3(in_planes: int, out_planes: int, stride: int = 1, groups: int = 1, dilation: int = 1) -> nn.Conv2d:
@@ -66,7 +67,7 @@ class BasicBlock(nn.Module):
 
         out += identity
         if self.use_ash:
-            out = apply_ash(out)
+            out = apply_ash(out, method=os.getenv('method'))
         out = self.relu(out)
 
         return out
@@ -131,7 +132,7 @@ class Bottleneck(nn.Module):
 
         out += identity
         if self.use_ash:
-            out = apply_ash(out)
+            out = apply_ash(out, method=os.getenv('method'))
         out = self.relu(out)
 
         return out

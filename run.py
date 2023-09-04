@@ -11,6 +11,88 @@ from ood_eval import ood_eval
 from utils.utils import is_debug_session
 
 
+def cifar100_vs_cifar10():
+    config = {
+        "id_dataset": "cifar100",
+        "ood_datasets": ["cifar10"],
+        "model_name": "densenet100",
+        "train_restore_file": "densenet100_cifar100.pth",
+        "batch_size": 200,
+        "scoring_method": "energy",
+        "method": tune.grid_search(["ash_s@65", "ash_s@80", "ash_s@90", "ash_s@95", "ash_s@99",
+                                    "ash_b@65", "ash_b@80", "ash_b@90", "ash_b@95", "ash_b@99",
+                                    "ash_p@65", "ash_p@80", "ash_p@90", "ash_p@95", "ash_p@99", "energy"])
+    }
+    run(config)
+
+
+def cifar10_vs_cifar100():
+    config = {
+        "id_dataset": "cifar10",
+        "ood_datasets": ["cifar100"],
+        "model_name": "densenet100",
+        "train_restore_file": "densenet100_cifar10.pth",
+        "batch_size": 200,
+        "scoring_method": "energy",
+        "method": tune.grid_search(["ash_s@65", "ash_s@80", "ash_s@90", "ash_s@95", "ash_s@99",
+                                    "ash_b@65", "ash_b@80", "ash_b@90", "ash_b@95", "ash_b@99",
+                                    "ash_p@65", "ash_p@80", "ash_p@90", "ash_p@95", "ash_p@99", "energy"])
+    }
+    run(config)
+
+
+def vit():
+    config = {
+        "id_dataset": "imagenet",
+        "ood_datasets": ["inaturalist", "sun", "places", "textures"],
+        "model_name": "vit",
+        "train_restore_file": "",
+        "batch_size": 200,
+        "scoring_method": "energy",
+        "method": tune.grid_search(["energy", "ash_s@65", "ash_s@90", "ash_s@95", "ash_s@99", "ash_b@65", "ash_b@90", "ash_b@95", "ash_b@99"])
+    }
+    run(config)
+
+
+def densenet_imagenet():
+    config = {
+        "id_dataset": "imagenet",
+        "ood_datasets": ["inaturalist", "sun", "places", "textures"],
+        "model_name": "densenet_imagenet",
+        "train_restore_file": "",
+        "batch_size": 200,
+        "scoring_method": "energy",
+        "method": tune.grid_search(["energy", "ash_s@65", "ash_s@90", "ash_s@95", "ash_s@99", "ash_b@65", "ash_b@90", "ash_b@95", "ash_b@99"])
+    }
+    run(config)
+
+
+def convnext():
+    config = {
+        "id_dataset": "imagenet",
+        "ood_datasets": ["inaturalist", "sun", "places", "textures"],
+        "model_name": "convnext",
+        "train_restore_file": "",
+        "batch_size": 200,
+        "scoring_method": "energy",
+        "method": tune.grid_search(["energy", "ash_s@65", "ash_s@90", "ash_s@95", "ash_s@99", "ash_b@65", "ash_b@90", "ash_b@95", "ash_b@99"])
+    }
+    run(config)
+
+
+def vgg():
+    config = {
+        "id_dataset": "imagenet",
+        "ood_datasets": ["inaturalist", "sun", "places", "textures"],
+        "model_name": "vgg16",
+        "train_restore_file": "vgg16-397923af.pth",
+        "batch_size": 200,
+        "scoring_method": "energy",
+        "method": tune.grid_search(["ash_s@65", "ash_s@95", "ash_b@65", "ash_b@90", "ash_b@95"])
+    }
+    run(config)
+
+
 def imagenet():
     config = {
         "id_dataset": "imagenet",
