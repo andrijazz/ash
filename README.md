@@ -4,7 +4,7 @@ Implementation of **A**ctivation **Sh**aping model for OOD detection. [ICLR2023]
 
 <a href="https://arxiv.org/abs/2209.09858" target="_blank">[Paper]</a> <a href="https://andrijazz.github.io/ash/" target="_blank">[Project Page]</a>
 
-![Activation Shaping method](resources/overview_figure_cropped-min.png)
+![Activation Shaping method](resources/overview_figure.jpeg)
 ## Setup
 
 ```bash
